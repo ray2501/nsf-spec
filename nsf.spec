@@ -14,7 +14,7 @@ URL:           https://next-scripting.org/xowiki/
 BuildRequires: autoconf
 BuildRequires: make
 BuildRequires: tcl-devel >= 8.5
-Requires:      tcl
+Requires:      tcl >= 8.5
 BuildRoot:     %{buildroot}
 
 %description
