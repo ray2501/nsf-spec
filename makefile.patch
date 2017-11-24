@@ -1,0 +1,95 @@
+--- Makefile.in.orig	2017-11-24 18:56:41.614976201 +0800
++++ Makefile.in	2017-11-24 19:01:29.084908368 +0800
+@@ -822,23 +822,22 @@
+ 	@mkdir -p $(DESTDIR)$(pkglibdir)
+ 	@list='$(lib_BINARIES)'; for p in $$list; do \
+ 	  if test -f $$p; then \
+-	    echo " $(INSTALL_PROGRAM) $$p $(DESTDIR)$(pkglibdir)/$$p"; \
+-	    $(INSTALL_PROGRAM) $$p $(DESTDIR)$(pkglibdir)/$$p; \
++	    echo " $(INSTALL_PROGRAM) $$p $(DESTDIR)$(libdir)/$$p"; \
++	    $(INSTALL_PROGRAM) $$p $(DESTDIR)$(libdir)/$$p; \
+ 	    stub=`echo $$p|sed -e "s/.*\(stub\).*/\1/"`; \
+ 	    if test "x$$stub" = "xstub"; then \
+-		echo " $(RANLIB_STUB) $(DESTDIR)$(pkglibdir)/$$p"; \
+-		$(RANLIB_STUB) $(DESTDIR)$(pkglibdir)/$$p; \
++		echo " $(RANLIB_STUB) $(DESTDIR)$(libdir)/$$p"; \
++		$(RANLIB_STUB) $(DESTDIR)$(libdir)/$$p; \
+ 	    else \
+-		echo " $(RANLIB) $(DESTDIR)$(pkglibdir)/$$p"; \
+-		$(RANLIB) $(DESTDIR)$(pkglibdir)/$$p; \
+-		ln -s $(DESTDIR)$(pkglibdir)/$$p $(DESTDIR)$(libdir)/$$p; \
++		echo " $(RANLIB) $(DESTDIR)$(libdir)/$$p"; \
++		$(RANLIB) $(DESTDIR)$(libdir)/$$p; \
+ 	    fi; \
+ 	    ext=`echo $$p|sed -e "s/.*\.//"`; \
+ 	    if test "x$$ext" = "xdll"; then \
+ 		lib=`basename $$p|sed -e 's/.[^.]*$$//'`.lib; \
+ 		if test -f $$lib; then \
+-		    echo " $(INSTALL_DATA) $$lib $(DESTDIR)$(pkglibdir)/$$lib"; \
+-	            $(INSTALL_DATA) $$lib $(DESTDIR)$(pkglibdir)/$$lib; \
++		    echo " $(INSTALL_DATA) $$lib $(DESTDIR)$(libdir)/$$lib"; \
++	            $(INSTALL_DATA) $$lib $(DESTDIR)$(libdir)/$$lib; \
+ 		fi; \
+ 	    fi; \
+ 	  fi; \
+--- unix/pkgIndex.unix.in.orig	2017-11-24 19:02:38.892515844 +0800
++++ unix/pkgIndex.unix.in	2017-11-24 19:03:34.404361082 +0800
+@@ -1,3 +1,3 @@
+-package ifneeded nsf @PACKAGE_VERSION@ [list load [file join $dir @PKG_LIB_FILE@] nsf]
++package ifneeded nsf @PACKAGE_VERSION@ [list load @PKG_LIB_FILE@ nsf]
+ 
+ 
+--- m4/tcl.m4.orig	2017-11-24 19:04:36.916236416 +0800
++++ m4/tcl.m4	2017-11-24 19:06:13.560052609 +0800
+@@ -4215,11 +4215,11 @@
+ 	eval $1_STUB_LIB_FLAG="-l$1stub`echo ${PACKAGE_VERSION} | tr -d .`${DBGX}"
+     fi
+     $1_BUILD_LIB_SPEC="-L`$CYGPATH $(pwd)` ${$1_LIB_FLAG}"
+-    $1_LIB_SPEC="-L`$CYGPATH ${pkglibdir}` ${$1_LIB_FLAG}"
++    $1_LIB_SPEC="-L`$CYGPATH ${libdir}` ${$1_LIB_FLAG}"
+     $1_BUILD_STUB_LIB_SPEC="-L`$CYGPATH $(pwd)` [$]{$1_STUB_LIB_FLAG}"
+-    $1_STUB_LIB_SPEC="-L`$CYGPATH ${pkglibdir}` [$]{$1_STUB_LIB_FLAG}"
++    $1_STUB_LIB_SPEC="-L`$CYGPATH ${libdir}` [$]{$1_STUB_LIB_FLAG}"
+     $1_BUILD_STUB_LIB_PATH="`$CYGPATH $(pwd)`/[$]{PKG_STUB_LIB_FILE}"
+-    $1_STUB_LIB_PATH="`$CYGPATH ${pkglibdir}`/[$]{PKG_STUB_LIB_FILE}"
++    $1_STUB_LIB_PATH="`$CYGPATH ${libdir}`/[$]{PKG_STUB_LIB_FILE}"
+ 
+     AC_SUBST($1_BUILD_LIB_SPEC)
+     AC_SUBST($1_LIB_SPEC)
+--- configure.ac.orig	2017-11-24 19:32:18.064172980 +0800
++++ configure.ac	2017-11-24 19:43:50.852691175 +0800
+@@ -389,7 +389,7 @@
+ if test "${TEA_PLATFORM}" != "windows" ; then
+ 
+ NSF_BUILD_LIB_SPEC="-L${NSF_BUILD_DIR} -lnsf${PACKAGE_VERSION}"
+-NSF_LIB_SPEC="-L${NSF_PKG_LIBDIR} -lnsf${PACKAGE_VERSION}"
++NSF_LIB_SPEC="-L${libdir} -lnsf${PACKAGE_VERSION}"
+ 
+ # If someone wants to build without stubs, as it was the case for
+ # earlier Tcl versions, we keep the following block as a reference.
+@@ -400,20 +400,20 @@
+ 	NSF_STUB_LIB_SPEC=""
+ else
+ 	NSF_BUILD_STUB_LIB_PATH="${NSF_SRC_DIR}/${PKG_STUB_LIB_FILE}"
+-	NSF_STUB_LIB_PATH="${NSF_PKG_LIBDIR}/${PKG_STUB_LIB_FILE}"
++	NSF_STUB_LIB_PATH="${libdir}/${PKG_STUB_LIB_FILE}"
+ 	NSF_BUILD_STUB_LIB_SPEC="-L${NSF_BUILD_DIR} -lnsfstub${PACKAGE_VERSION}"
+-	NSF_STUB_LIB_SPEC="-L${NSF_PKG_LIBDIR} -lnsfstub${PACKAGE_VERSION}"
++	NSF_STUB_LIB_SPEC="-L${libdir} -lnsfstub${PACKAGE_VERSION}"
+ 	AC_DEFINE([COMPILE_NSF_STUBS])
+ fi
+ 
+ else
+ 
+ NSF_BUILD_LIB_SPEC="${NSF_SRC_DIR}/${PKG_LIB_FILE}"
+-NSF_LIB_SPEC="${NSF_PKG_LIBDIR}/${PKG_LIB_FILE}"
++NSF_LIB_SPEC="${libdir}/${PKG_LIB_FILE}"
+ NSF_BUILD_STUB_LIB_PATH="${NSF_BUILD_DIR}/${PKG_STUB_LIB_FILE}"
+-NSF_STUB_LIB_PATH="${NSF_PKG_LIBDIR}/${PKG_STUB_LIB_FILE}"
++NSF_STUB_LIB_PATH="${libdir}/${PKG_STUB_LIB_FILE}"
+ NSF_BUILD_STUB_LIB_SPEC="${NSF_BUILD_DIR}/${PKG_STUB_LIB_FILE}"
+-NSF_STUB_LIB_SPEC="${NSF_PKG_LIBDIR}/${PKG_STUB_LIB_FILE}"
++NSF_STUB_LIB_SPEC="${libdir}/${PKG_STUB_LIB_FILE}"
+ 
+ fi
+ 
