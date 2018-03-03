@@ -49,7 +49,7 @@ This package contains development files for NSF.
 make
 
 %install
-make DESTDIR=%{buildroot} pkglibdir=%tclscriptdir/%{name}%{version} install
+make DESTDIR=%{buildroot} pkglibdir=%tcl_noarchdir/%{name}%{version} install
 
 %clean
 rm -rf %buildroot
@@ -61,7 +61,7 @@ rm -rf %buildroot
 /usr/bin/xotclsh
 /usr/bin/xowish
 /usr/lib64/libnsf2.1.0.so
-%tclscriptdir/%{name}%{version}
+%tcl_noarchdir/%{name}%{version}
 /usr/share/man/man1
 /usr/share/man/man3
 
