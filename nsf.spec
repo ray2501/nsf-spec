@@ -4,7 +4,7 @@
 
 Name:          nsf
 Summary:       Next Scripting Framework (NSF): Object orientation for Tcl
-Version:       2.1.0
+Version:       2.2.0
 Release:       0
 License:       MIT
 Group:         Development/Libraries/Tcl
@@ -60,7 +60,7 @@ rm -rf %buildroot
 /usr/bin/nxwish
 /usr/bin/xotclsh
 /usr/bin/xowish
-/usr/lib64/libnsf2.1.0.so
+/usr/lib64/libnsf2.2.0.so
 %tcl_noarchdir/%{name}%{version}
 /usr/share/man/man1
 /usr/share/man/man3
@@ -68,7 +68,7 @@ rm -rf %buildroot
 %files devel
 %defattr(-,root,root)
 /usr/lib64/nsfConfig.sh
-/usr/lib64/libnsfstub2.1.0.a
+/usr/lib64/libnsfstub2.2.0.a
 /usr/include/nsf.h
 /usr/include/nsfDecls.h
 /usr/include/nsfInt.h

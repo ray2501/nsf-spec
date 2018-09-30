@@ -1,8 +1,8 @@
 #!/usr/bin/tclsh
 
 set arch "x86_64"
-set base "nsf2.1.0"
-set fileurl "http://sourceforge.net/projects/next-scripting/files/2.1.0/nsf2.1.0.tar.gz"
+set base "nsf2.2.0"
+set fileurl "http://sourceforge.net/projects/next-scripting/files/2.2.0/nsf2.2.0.tar.gz"
 
 set var [list wget $fileurl -O $base.tar.gz]
 exec >@stdout 2>@stderr {*}$var
