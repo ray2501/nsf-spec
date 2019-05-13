@@ -4,11 +4,11 @@
 
 Name:          nsf
 Summary:       Next Scripting Framework (NSF): Object orientation for Tcl
-Version:       2.2.0
+Version:       2.3.0
 Release:       0
 License:       MIT
 Group:         Development/Libraries/Tcl
-Source:        %{name}%{version}.tar.gz
+Source:        %{name}-%{version}.tar.gz
 Patch0:        makefile.patch
 URL:           https://next-scripting.org/xowiki/
 BuildRequires: autoconf
@@ -33,7 +33,7 @@ Requires:       %{name} = %version
 This package contains development files for NSF.
 
 %prep
-%setup -q -n %{name}%{version}
+%setup -q -n %{name}-%{version}
 %patch0
 
 %build
@@ -60,7 +60,7 @@ rm -rf %buildroot
 /usr/bin/nxwish
 /usr/bin/xotclsh
 /usr/bin/xowish
-/usr/lib64/libnsf2.2.0.so
+/usr/lib64/libnsf2.3.0.so
 %tcl_noarchdir/%{name}%{version}
 /usr/share/man/man1
 /usr/share/man/man3
@@ -68,7 +68,7 @@ rm -rf %buildroot
 %files devel
 %defattr(-,root,root)
 /usr/lib64/nsfConfig.sh
-/usr/lib64/libnsfstub2.2.0.a
+/usr/lib64/libnsfstub2.3.0.a
 /usr/include/nsf.h
 /usr/include/nsfDecls.h
 /usr/include/nsfInt.h
